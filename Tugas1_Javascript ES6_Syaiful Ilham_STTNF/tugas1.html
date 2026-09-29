@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Luas Bangun Datar</title>
+</head>
+<body>
+    <h1>Hitung Luas Bangun Datar</h1>
+
+    <form id="formPersegiPanjang">
+        <h2>Luas Persegi Panjang</h2>
+        <label for="panjang">Panjang:</label>
+        <input type="number" id="panjang" min="0" step="any" required>
+        <br><br>
+        <label for="lebar">Lebar:</label>
+        <input type="number" id="lebar" min="0" step="any" required>
+        <br><br>
+        <button type="submit">Hitung</button>
+        <p id="hasilPersegiPanjang"></p>
+    </form>
+
+    <form id="formBujurSangkar">
+        <h2>Luas Bujur Sangkar</h2>
+        <label for="sisi">Sisi:</label>
+        <input type="number" id="sisi" min="0" step="any" required>
+        <br><br>
+        <button type="submit">Hitung</button>
+        <p id="hasilBujurSangkar"></p>
+    </form>
+
+    <form id="formSegitiga">
+        <h2>Luas Segitiga</h2>
+        <label for="alas">Alas:</label>
+        <input type="number" id="alas" min="0" step="any" required>
+        <br><br>
+        <label for="tinggi">Tinggi:</label>
+        <input type="number" id="tinggi" min="0" step="any" required>
+        <br><br>
+        <button type="submit">Hitung</button>
+        <p id="hasilSegitiga"></p>
+    </form>
+
+    <script>
+        //function hitung luas persegi panjang
+        document.getElementById("formPersegiPanjang").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const panjang = Number(document.getElementById("panjang").value);
+            const lebar = Number(document.getElementById("lebar").value);
+            const luas = panjang * lebar;
+            document.getElementById("hasilPersegiPanjang").textContent = "Luas: " + luas;
+        });
+        //function hitung luas bujur sangkar
+        document.getElementById("formBujurSangkar").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const sisi = Number(document.getElementById("sisi").value);
+            const luas = sisi * sisi;
+            document.getElementById("hasilBujurSangkar").textContent = "Luas: " + luas;
+        });
+        //function hitung luas segitiga
+        document.getElementById("formSegitiga").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const alas = Number(document.getElementById("alas").value);
+            const tinggi = Number(document.getElementById("tinggi").value);
+            const luas = 0.5 * alas * tinggi;
+            document.getElementById("hasilSegitiga").textContent = "Luas: " + luas;
+        });
+    </script>
+</body>
+</html>
