@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Data dan Gaji Pegawai</title>
+</head>
+<body>
+	<h1>Data dan Gaji Pegawai</h1>
+
+	<table border="1" cellpadding="8" cellspacing="0">
+		<thead>
+			<tr>
+				<th>Nama Pegawai</th>
+				<th>Umur</th>
+				<th>Jabatan</th>
+				<th>Status</th>
+				<th>Gaji Pokok</th>
+				<th>Tunjangan Jabatan</th>
+				<th>BPJS</th>
+				<th>Tunjangan Keluarga</th>
+			</tr>
+		</thead>
+		<tbody id="dataPegawai"></tbody>
+		<tfoot>
+			<tr>
+				<th colspan="7">Total Gaji</th>
+				<th id="totalGaji"></th>
+			</tr>
+		</tfoot>
+	</table>
+
+	<script>
+		const pegawai = {
+			nama: "dodi prayodi",
+			umur: 25,
+			jabatan: "manajer",
+			status: "menikah"
+		};
+
+		let gajiPokok = 0;
+		if (pegawai.jabatan.toLowerCase() === "manajer") {
+			gajiPokok = 15000000;
+		} else if (pegawai.jabatan.toLowerCase() === "asisten manajer") {
+			gajiPokok = 10000000;
+		} else if (pegawai.jabatan.toLowerCase() === "staff") {
+			gajiPokok = 5000000;
+		}
+
+		const tunjanganJabatan = gajiPokok * 0.15;
+		const bpjs = gajiPokok * 0.10;
+		const tunjanganKeluarga = pegawai.status.toLowerCase() === "menikah"
+			? gajiPokok * 0.20
+			: 0;
+		const totalGaji = gajiPokok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+		const formatRupiah = (jumlah) => "Rp" + jumlah.toLocaleString("id-ID");
+
+		document.getElementById("dataPegawai").innerHTML = `
+			<tr>
+				<td>${pegawai.nama}</td>
+				<td>${pegawai.umur} tahun</td>
+				<td>${pegawai.jabatan}</td>
+				<td>${pegawai.status}</td>
+				<td>${formatRupiah(gajiPokok)}</td>
+				<td>${formatRupiah(tunjanganJabatan)}</td>
+				<td>${formatRupiah(bpjs)}</td>
+				<td>${formatRupiah(tunjanganKeluarga)}</td>
+			</tr>
+		`;
+		document.getElementById("totalGaji").textContent = formatRupiah(totalGaji);
+	</script>
+</body>
+</html>
