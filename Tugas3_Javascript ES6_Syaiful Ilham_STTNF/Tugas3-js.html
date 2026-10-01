@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Produk Toko</title>
+</head>
+<body>
+  <h1>Manajemen Produk Toko</h1>
+
+  <h2>Tambah Produk</h2>
+  <form id="formProduk">
+    <input type="text" id="nama" placeholder="Nama produk" required>
+    <input type="number" id="harga" placeholder="Harga" min="0" required>
+    <input type="number" id="stok" placeholder="Stok" min="0" required>
+    <button type="submit">Tambah</button>
+  </form>
+
+  <h2>Daftar Produk</h2>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Harga</th>
+        <th>Stok</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="daftarProduk"></tbody>
+  </table>
+
+  <script>
+    const produkToko = [
+      { id: 1, nama: "Laptop", harga: 7000000, stok: 5 },
+      { id: 2, nama: "Mouse", harga: 200000, stok: 10 },
+      { id: 3, nama: "Keyboard", harga: 350000, stok: 7 }
+    ];
+
+    function tambahProduk(nama, harga, stok) {
+      const idBaru = produkToko.length > 0
+      ? Math.max(...produkToko.map(p=> p.id)) +1
+      : 1;
+
+
+      produkToko.push({ id: idBaru, nama, harga, stok });
+      tampilkanProduk();
+    }
+
+    function hapusProduk(id) {
+      const index = produkToko.findIndex(p => p.id === id);
+
+      if (index === -1) {
+        alert(`Produk dengan id ${id} tidak ditemukan.`);
+        return;
+      }
+
+      produkToko.splice(index, 1);
+      tampilkanProduk();
+    }
+
+    function tampilkanProduk() {
+      const tbody = document.getElementById("daftarProduk");
+      tbody.innerHTML = "";
+
+      if (produkToko.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="kosong">Belum ada produk.</td></tr>`;
+        return;
+      }
+
+      produkToko.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.nama}</td>
+          <td>Rp${p.harga.toLocaleString("id-ID")}</td>
+          <td>${p.stok}</td>
+          <td><button onclick="hapusProduk(${p.id})">Hapus</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("formProduk").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const nama = document.getElementById("nama").value.trim();
+      const harga = Number(document.getElementById("harga").value);
+      const stok = Number(document.getElementById("stok").value);
+
+      tambahProduk(nama, harga, stok);
+      this.reset();
+    });
+
+    tampilkanProduk();
+  </script>
+</body>
+</html>
