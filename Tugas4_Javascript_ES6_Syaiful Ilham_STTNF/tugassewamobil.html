@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Sistem Penyewaan Mobil</h1>
+    <table id="daftarPelanggan" border="1" cellspacing="0" cellpadding="5">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>No. Telepon</th>
+                <th>Kendaraan Disewa</th>
+            </tr>
+        </thead>
+        <tbody id="tbodyPelanggan"></tbody>
+    </table>
+</body>
+</html>
+<script>
+class Pelanggan {
+    constructor(nama, nomorTelepon, kendaraanDisewa = null) {
+        this.nama = nama;
+        this.nomorTelepon = nomorTelepon;
+        this.kendaraanDisewa = kendaraanDisewa;
+    }
+
+    catatTransaksi(kendaraan) {
+        this.kendaraanDisewa = kendaraan;
+        return `Transaksi penyewaan berhasil dicatat untuk ${this.nama}: ${kendaraan}.`;
+    }
+}
+
+function tampilkanDaftarPelanggan(pelangganList) {
+    const tbody = document.getElementById("tbodyPelanggan");
+    const pelangganMenyewa = pelangganList.filter(
+        (pelanggan) => pelanggan.kendaraanDisewa
+    );
+
+    tbody.innerHTML = "";
+
+    if (pelangganMenyewa.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4">Tidak ada pelanggan yang sedang menyewa kendaraan.</td>
+            </tr>
+        `;
+        console.log("Tidak ada pelanggan yang sedang menyewa kendaraan.");
+        return;
+    }
+
+    console.log("Daftar pelanggan yang sedang menyewa kendaraan:");
+    pelangganMenyewa.forEach((pelanggan, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${pelanggan.nama}</td>
+            <td>${pelanggan.nomorTelepon}</td>
+            <td>${pelanggan.kendaraanDisewa}</td>
+        `;
+        tbody.appendChild(row);
+
+        console.log(
+            `${index + 1}. Nama: ${pelanggan.nama}, ` +
+            `No. Telepon: ${pelanggan.nomorTelepon}, ` +
+            `Kendaraan: ${pelanggan.kendaraanDisewa}`
+        );
+    });
+}
+
+const pelanggan1 = new Pelanggan("Ahmad Andriyan", "08123456789");
+const pelanggan2 = new Pelanggan("Zahra Cantika", "08198765432");
+const pelanggan3 = new Pelanggan("Budi Suryanto", "08123456780");
+
+console.log(pelanggan1.catatTransaksi("Toyota Avanza"));
+console.log(pelanggan2.catatTransaksi("Honda Jazz"));
+console.log(pelanggan3.catatTransaksi("Suzuki Ertiga"));
+
+const daftarPelanggan = [pelanggan1, pelanggan2, pelanggan3];
+tampilkanDaftarPelanggan(daftarPelanggan);
+</script>
