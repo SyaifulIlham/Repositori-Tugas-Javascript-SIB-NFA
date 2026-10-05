@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+    form {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+
+    }
+</style>
+<body>
+    <h1>Tugas 5: Javascript ES6</h1>
+    <form id="formProduk">
+        <label for="namaProduk">Nama produk:</label>
+        <input id="namaProduk" name="nama" type="text" required>
+        <label for="hargaProduk">Harga:</label>
+        <input id="hargaProduk" name="harga" type="number" min="0" required>
+        <button type="submit">Tambah Produk</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Produk</th>
+                <th>Harga</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="tabelProduk"></tbody>
+    </table>
+</body>
+<script>
+    let listProduk = [
+        { id: 1, nama: "Laptop", harga: 7000000 },
+        { id: 2, nama: "Mouse", harga: 200000 },
+        { id: 3, nama: "Keyboard", harga: 300000 },
+        { id: 4, nama: "Monitor", harga: 1400000 },
+        { id: 5, nama: "Headset", harga: 500000 }
+    ];
+
+    const tbodyElement = document.querySelector('#tabelProduk');
+    const formElement = document.querySelector('#formProduk');
+
+    function renderTable() {
+        tbodyElement.replaceChildren(...listProduk.map(({ id, nama, harga }) => {
+            const row = document.createElement('tr');
+            const idCell = document.createElement('td');
+            const nameCell = document.createElement('td');
+            const priceCell = document.createElement('td');
+            const actionCell = document.createElement('td');
+            const removeButton = document.createElement('button');
+
+            idCell.textContent = id;
+            nameCell.textContent = nama;
+            priceCell.textContent = `Rp ${harga.toLocaleString('id-ID')}`;
+            removeButton.type = 'button';
+            removeButton.textContent = 'Hapus';
+            removeButton.dataset.id = id;
+
+            actionCell.append(removeButton);
+            row.append(idCell, nameCell, priceCell, actionCell);
+            return row;
+        }));
+    }
+
+    function addProduk(...produkBaru) {
+        let nextId = Math.max(0, ...listProduk.map(({ id }) => id)) + 1;
+        listProduk = [
+            ...listProduk,
+            ...produkBaru.map(({ nama, harga }) => ({
+                id: nextId++,
+                nama,
+                harga
+            }))
+        ];
+        renderTable();
+    }
+
+    function removeProduk(id) {
+        listProduk = listProduk.filter(produk => produk.id !== id);
+        renderTable();
+    }
+
+    formElement.addEventListener('submit', event => {
+        event.preventDefault();
+        const formData = new FormData(formElement);
+        const [nama, harga] = [
+            formData.get('nama').trim(),
+            Number(formData.get('harga'))
+        ];
+
+        addProduk({ nama, harga });
+        formElement.reset();
+    });
+
+    tbodyElement.addEventListener('click', event => {
+        const removeButton = event.target.closest('button[data-id]');
+        if (removeButton) {
+            removeProduk(Number(removeButton.dataset.id));
+        }
+    });
+
+    renderTable();
+</script>
+</html>
